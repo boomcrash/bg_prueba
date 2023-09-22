@@ -1,4 +1,4 @@
 export const environments = {
     production: false,
-    apiUrl: 'http://localhost:44345' 
+    apiUrl: 'https://localhost:44345' 
 };
