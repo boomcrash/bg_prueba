@@ -1,0 +1,35 @@
+<nav class="p-3 mb-3 fixed-top" style="background-color: #79aaf3;">
+  <div class="container-fluid">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <a routerLink="/" class="white-link col-lg-4 link-body-emphasis text-decoration-none">
+        <div>
+          <h4 class="mb-0"><i class="bi bi-house white-link"></i> Milton Elizalde </h4>
+          <p class="small mt-1 mb-0">Shop</p>
+        </div>
+      </a>
+
+      <ul class="nav col-lg-auto me-lg-auto justify-content-center mb-md-1">
+        <li>
+          <a *ngIf="isLogged" class="nav-link px-2  white-link" routerLink="/usuario">Productos <i class="bi bi-shop"></i></a>
+        </li>
+      </ul>
+
+      <div class="text-end">
+        <a type="button" class="btn btn-outline-light me-2" routerLink="/login">Inicia sesión <i class="bi bi-box-arrow-in-left"></i></a>
+      </div>
+      <div *ngIf="isLogged" class="dropdown text-end ">
+        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle white-link m-2" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <i class="white-link bi bi-person-check"></i>
+        </a>
+        <ul  class="dropdown-menu" style="background-color: black;">
+          <li><a class="dropdown-item " routerLink="/usuario/myprofile">Perfil <i class="bi bi-person-circle"></i></a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li  ><a class="dropdown-item" (click)="logout()">Cerrar sesión <i class="bi bi-box-arrow-in-right"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

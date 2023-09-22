@@ -56,7 +56,7 @@ namespace Back_End.Controllers
                         List<DatosItem> productos = new List<DatosItem>();
 
                         while (dr.Read())
-                        {
+                        {   
                             DatosItem producto = new DatosItem();
                             producto.id = dr.GetInt32(dr.GetOrdinal("id"));
                             producto.descripcion = dr.GetString(dr.GetOrdinal("descripcion"));
