@@ -14,7 +14,7 @@
     {
         public int id { get; set; }
         public string descripcion { get; set; }
-        public string precio { get; set; }
+        public decimal precio { get; set; }
         public bool estado { get; set; }
         public string detalle { get; set; }
         public string imagen { get; set; }
