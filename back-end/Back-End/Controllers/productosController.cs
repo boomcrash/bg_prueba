@@ -1,83 +1,95 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Back_End.datos;
+using Back_End.model.login;
+using Back_End.model.producto;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.Common;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Back_End.Controllers
 {
     public class productosController : Controller
     {
-        // GET: productosController
-        public ActionResult Index()
+
+        private readonly productoDatos _productoDatos;
+
+        public productosController()
         {
-            return View();
+            _productoDatos = new productoDatos();
         }
 
-        // GET: productosController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
-        // GET: productosController/Create
-        public ActionResult Create()
+        [HttpPost("productos")]
+        public IActionResult ObtenerTodosLosProductos([FromBody] GenericoRequest request)
         {
-            return View();
-        }
-
-        // POST: productosController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            // Verificar que el objeto de solicitud tenga la transacción y tipo esperados
+            if (request != null && request.transaccion == "generico" && request.tipo == "4")
             {
-                return RedirectToAction(nameof(Index));
+                // Llamar a la función para obtener todos los productos
+                List<ProductoModel> productos = ObtenerTodosLosProductos();
+
+                if (productos != null)
+                {
+                    // Construir la respuesta
+                    var respuesta = new
+                    {
+                        codigoRetorno = "0001",
+                        mensajeRetorno = "Consulta Ok",
+                        data = productos
+                    };
+
+                    return Ok(respuesta);
+                }
             }
-            catch
-            {
-                return View();
-            }
+
+            // Si la solicitud es incorrecta, retornar un mensaje de error
+            return BadRequest("Solicitud inválida");
         }
 
-        // GET: productosController/Edit/5
-        public ActionResult Edit(int id)
+        // Función para obtener todos los productos (debe ser proporcionada)
+        private List<ProductoModel> ObtenerTodosLosProductos()
         {
-            return View();
-        }
+            // Debes implementar esta función de acuerdo a tu lógica para obtener productos desde la base de datos
+            // Por ejemplo, puedes llamar a tu función existente ObtenerTodosLosProductos aquí.
+            // Asumo que la función devuelve una lista de ProductoModel.
+            Conexion conexion = new Conexion();
+            string query = "sp_crud_producto";
 
-        // POST: productosController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
+            using (DbConnection dbConnection = new SqlConnection(conexion.getCadenaSQL()))
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                dbConnection.Open();
+                using (DbCommand cmd = dbConnection.CreateCommand())
+                {
+                    cmd.CommandText = query;
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-        // GET: productosController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+                    cmd.Parameters.Add(new SqlParameter("@opcion", 2)); // Opción 2 para obtener todos los productos
 
-        // POST: productosController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                    using (DbDataReader dr = cmd.ExecuteReader())
+                    {
+                        List<ProductoModel> productos = new List<ProductoModel>();
+
+                        while (dr.Read())
+                        {
+                            ProductoModel producto = new ProductoModel();
+                            producto.Id = dr.GetInt32(dr.GetOrdinal("id"));
+                            producto.Descripcion = dr.GetString(dr.GetOrdinal("descripcion"));
+                            producto.Precio = dr.GetDecimal(dr.GetOrdinal("precio"));
+                            producto.Estado = dr.GetBoolean(dr.GetOrdinal("estado"));
+                            producto.Detalle = dr.GetString(dr.GetOrdinal("detalle"));
+                            producto.Imagen = dr.GetString(dr.GetOrdinal("imagen"));
+                            productos.Add(producto);
+                        }
+
+                        return productos;
+                    }
+                }
             }
         }
     }
+
+
+
+
 }

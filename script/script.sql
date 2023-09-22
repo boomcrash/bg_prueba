@@ -34,6 +34,36 @@ CREATE TABLE Producto (
 );
 GO
 
+INSERT INTO Producto (descripcion, precio, estado, detalle, imagen)
+VALUES ('Producto 1', 10.99, 1, 'Descripción del Producto 1', 'https://picsum.photos/640/640?r=8481');
+
+INSERT INTO Producto (descripcion, precio, estado, detalle, imagen)
+VALUES ('Producto 2', 19.95, 1, 'Descripción del Producto 2', 'https://picsum.photos/640/640?r=4549');
+
+INSERT INTO Producto (descripcion, precio, estado, detalle, imagen)
+VALUES ('Producto 3', 5.49, 0, 'Descripción del Producto 3', 'https://picsum.photos/640/640?r=8481');
+
+INSERT INTO Producto (descripcion, precio, estado, detalle, imagen)
+VALUES ('Producto 4', 29.99, 1, 'Descripción del Producto 4', 'https://picsum.photos/640/640?r=4549');
+
+INSERT INTO Producto (descripcion, precio, estado, detalle, imagen)
+VALUES ('Producto 5', 8.75, 1, 'Descripción del Producto 5', 'https://picsum.photos/640/640?r=8481');
+
+INSERT INTO Producto (descripcion, precio, estado, detalle, imagen)
+VALUES ('Producto 6', 14.50, 0, 'Descripción del Producto 6', 'https://picsum.photos/640/640?r=4549');
+
+INSERT INTO Producto (descripcion, precio, estado, detalle, imagen)
+VALUES ('Producto 7', 12.99, 1, 'Descripción del Producto 7', 'https://picsum.photos/640/640?r=4549');
+
+INSERT INTO Producto (descripcion, precio, estado, detalle, imagen)
+VALUES ('Producto 8', 7.25, 1, 'Descripción del Producto 8', 'https://picsum.photos/640/640?r=8481g');
+
+INSERT INTO Producto (descripcion, precio, estado, detalle, imagen)
+VALUES ('Producto 9', 22.95, 1, 'Descripción del Producto 9', 'https://picsum.photos/640/640?r=4549');
+
+INSERT INTO Producto (descripcion, precio, estado, detalle, imagen)
+VALUES ('Producto 10', 15.99, 0, 'Descripción del Producto 10', 'https://picsum.photos/640/640?r=8481');
+
 
 
 

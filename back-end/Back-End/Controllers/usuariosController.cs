@@ -40,7 +40,7 @@ namespace Back_End.Controllers
                     return Ok(response);
             }
 
-            return Unauthorized("Credenciales inválidas o usuario no encontrado.");
+            return Unauthorized(new AutenticarUsuarioResponse());
         }
     }
 }
