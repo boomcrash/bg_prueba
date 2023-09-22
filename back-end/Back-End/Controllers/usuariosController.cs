@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Back_End.Controllers
 {
-    public class loginController : Controller
+    public class usuarioController : Controller
     {
         // GET: loginController
         public ActionResult Index()

@@ -7,8 +7,12 @@ GO
 CREATE TABLE Usuario (
     id INT IDENTITY(1,1) PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
-    [password] VARCHAR(255) NOT NULL
+    [password] VARCHAR(255) NOT NULL,
+    nombre VARCHAR(255) NULL,
+    [plan] INT NULL,
+    telefono VARCHAR(20) NULL
 );
+
 GO
 
 CREATE TABLE Producto (
@@ -24,7 +28,6 @@ GO
 
 
 
-
 CREATE PROCEDURE sp_crud_login
     @opcion INT,
     @usuario_id INT = NULL,
@@ -32,29 +35,24 @@ CREATE PROCEDURE sp_crud_login
     @password VARCHAR(255) = NULL
 AS
 BEGIN
+    -- Consultar un usuario por ID
     IF @opcion = 1
-    BEGIN
-        INSERT INTO Usuario (email, [password])
-        VALUES (@email, @password);
-    END
-    ELSE IF @opcion = 2
     BEGIN
         IF @usuario_id IS NOT NULL
             SELECT * FROM Usuario WHERE id = @usuario_id;
         ELSE
             SELECT * FROM Usuario;
     END
-    ELSE IF @opcion = 3
+    -- Verificar que un usuario y contraseña existen
+    ELSE IF @opcion = 2
     BEGIN
-        UPDATE Usuario
-        SET email = @email, [password] = @password
-        WHERE id = @usuario_id;
-    END
-    ELSE IF @opcion = 4
-    BEGIN
-        DELETE FROM Usuario WHERE id = @usuario_id;
+        IF EXISTS (SELECT 1 FROM Usuario WHERE email = @email AND [password] = @password)
+            SELECT 'Usuario y contraseña válidos' AS mensaje;
+        ELSE
+            SELECT 'Usuario y contraseña no válidos' AS mensaje;
     END
 END;
+
 GO
 
 
