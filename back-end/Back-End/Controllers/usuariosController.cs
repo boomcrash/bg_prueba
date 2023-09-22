@@ -1,83 +1,46 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Back_End.datos;
+using Back_End.model.login;
+using Back_End.model.usuario;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Back_End.Controllers
 {
-    public class usuarioController : Controller
+    public class usuariosController : Controller
     {
-        // GET: loginController
-        public ActionResult Index()
+
+        private readonly usuarioDatos _usuarioDatos;
+
+        public usuariosController()
         {
-            return View();
+            _usuarioDatos = new usuarioDatos();
         }
 
-        // GET: loginController/Details/5
-        public ActionResult Details(int id)
+        [HttpPost("usuarios")]
+        public IActionResult VerificarCredenciales([FromBody] AutenticarUsuarioRequest request)
         {
-            return View();
-        }
 
-        // GET: loginController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+            // Verificar las credenciales (usuario y contraseña)
+            bool credencialesValidas = _usuarioDatos.VerificarCredenciales(request.datosUsuario.email, request.datosUsuario.password);
 
-        // POST: loginController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            if (credencialesValidas)
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                UsuarioModel usuario = _usuarioDatos.ObtenerUsuarioPorEmail(request.datosUsuario.email);
+                AutenticarUsuarioResponse response = new AutenticarUsuarioResponse();
+                response.codigoRetorno = "0001";
+                response.mensajeRetorno = "consulta correcta";
 
-        // GET: loginController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+                Usuario userRepsonse= new Usuario();
+                userRepsonse.plan = usuario.Plan;
+                userRepsonse.email = usuario.Email;
+                userRepsonse.nombre = usuario.Nombre;
+                userRepsonse.telefono = usuario.Telefono;
 
-        // POST: loginController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                response.usuario = userRepsonse;
+                    return Ok(response);
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: loginController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: loginController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return Unauthorized("Credenciales inválidas o usuario no encontrado.");
         }
     }
 }

@@ -6,12 +6,21 @@ GO
 
 CREATE TABLE Usuario (
     id INT IDENTITY(1,1) PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL unique,
     [password] VARCHAR(255) NOT NULL,
     nombre VARCHAR(255) NULL,
     [plan] INT NULL,
     telefono VARCHAR(20) NULL
 );
+
+-- Insertar un usuario sin especificar el ID
+INSERT INTO Usuario (email, [password], nombre, [plan], telefono)
+VALUES ('usuario1@example.com', 'contrasena123', 'Usuario 1', 1, '1234567890');
+
+-- Insertar otro usuario sin especificar el ID
+INSERT INTO Usuario (email, [password], nombre, [plan], telefono)
+VALUES ('usuario2@example.com', 'password456', 'Usuario 2', NULL, '9876543210');
+
 
 GO
 
@@ -38,8 +47,8 @@ BEGIN
     -- Consultar un usuario por ID
     IF @opcion = 1
     BEGIN
-        IF @usuario_id IS NOT NULL
-            SELECT * FROM Usuario WHERE id = @usuario_id;
+        IF @email IS NOT NULL
+            SELECT * FROM Usuario WHERE email = @email;
         ELSE
             SELECT * FROM Usuario;
     END
